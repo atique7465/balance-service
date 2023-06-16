@@ -3,6 +3,8 @@ package com.atique.balanceservice.controller;
 import com.atique.balanceservice.annotations.ValidAccountNo;
 import com.atique.balanceservice.model.BalanceSummary;
 import com.atique.balanceservice.service.BalanceService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,8 +28,10 @@ public class BalanceController {
         this.balanceService = balanceService;
     }
 
+    @Operation(summary = "Get Balance Summary By Account Number", tags = {"Balance", "Monthly Balance", "Cumulative Balance"})
     @GetMapping(value = "/{accNo}", produces = MediaType.APPLICATION_JSON_VALUE)
-    BalanceSummary getBalance(@PathVariable(value = "accNo") @ValidAccountNo String accNo) {
+    BalanceSummary getBalance(@Parameter(name = "accNo", description = "Customer Account No", required = true)
+                              @PathVariable(value = "accNo") @ValidAccountNo String accNo) {
         return balanceService.getSummaryByAccNo(accNo);
     }
 }
