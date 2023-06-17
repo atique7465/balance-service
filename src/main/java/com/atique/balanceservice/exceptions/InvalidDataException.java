@@ -20,4 +20,8 @@ public class InvalidDataException extends BaseException {
     public InvalidDataException(ErrorCode errorCode, Exception exception) {
         super(errorCode, exception);
     }
+
+    public InvalidDataException(String message, Exception exception) {
+        super(ErrorCode.INVALID_DATA_GIVEN, message, exception);
+    }
 }

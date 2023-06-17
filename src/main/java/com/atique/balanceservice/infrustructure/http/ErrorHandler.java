@@ -1,4 +1,4 @@
-package com.atique.balanceservice.infrustructure;
+package com.atique.balanceservice.infrustructure.http;
 
 import com.atique.balanceservice.exceptionresolvers.ErrorResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;

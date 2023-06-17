@@ -1,4 +1,4 @@
-package com.atique.balanceservice.infrustructure;
+package com.atique.balanceservice.infrustructure.http;
 
 import com.atique.balanceservice.exceptions.InvalidConfigurationException;
 import com.atique.balanceservice.enums.ComponentCode;
@@ -59,6 +59,6 @@ public class HttpRouteProperties {
         if (route == null)
             throw new InvalidConfigurationException("Route not configured for " + componentCode.getName() + " in property source");
 
-        return new HttpHost(route.scheme, new Host(route.getHost(), route.getPort())).toURI();
+        return new StringBuilder(new HttpHost(route.scheme, new Host(route.getHost(), route.getPort())).toURI()).append(route.contextPath).toString();
     }
 }

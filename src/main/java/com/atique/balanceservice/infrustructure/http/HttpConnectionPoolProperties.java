@@ -1,4 +1,4 @@
-package com.atique.balanceservice.infrustructure;
+package com.atique.balanceservice.infrustructure.http;
 
 import lombok.Getter;
 import org.springframework.boot.context.properties.ConfigurationProperties;

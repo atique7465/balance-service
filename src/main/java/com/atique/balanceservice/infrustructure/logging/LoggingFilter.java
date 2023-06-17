@@ -9,8 +9,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
-import org.springframework.web.filter.CommonsRequestLoggingFilter;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 
@@ -27,36 +28,28 @@ import java.util.Map;
  */
 
 @Component
-@WebFilter(filterName = "RequestResponseLoggingFilter", urlPatterns = "/*")
+@WebFilter(filterName = "LoggingFilter", urlPatterns = "/*")
 @Order(value = Ordered.HIGHEST_PRECEDENCE)
 @Slf4j
 public class LoggingFilter extends OncePerRequestFilter {
 
-    private final LoggingProperties props;
-    private final RequestResponseLogger requestResponseLogger;
-
-    public LoggingFilter(LoggingProperties props, RequestResponseLogger requestResponseLogger) {
-        this.props = props;
-        this.requestResponseLogger = requestResponseLogger;
-    }
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        if (!props.isEnabled()) return;
+        if (!LoggingProperties.enabled) return;
 
         CachedHttpServletRequest cachedHttpServletRequest = new CachedHttpServletRequest(request);
         ContentCachingResponseWrapper responseWrapper = new ContentCachingResponseWrapper(response);
 
-        String body = getRequestBodyString(cachedHttpServletRequest);
         Map<String, String> headers = getReqHeadersToPrint(cachedHttpServletRequest);
-        requestResponseLogger.log(true, cachedHttpServletRequest.getMethod(), cachedHttpServletRequest.getRequestURI(), cachedHttpServletRequest.getProtocol(), headers, body);
+        String reqPayload = getRequestBodyString(headers, cachedHttpServletRequest);
+        RequestResponseLogger.log(true, cachedHttpServletRequest.getMethod(), cachedHttpServletRequest.getRequestURI(), cachedHttpServletRequest.getProtocol(), headers, reqPayload);
 
         filterChain.doFilter(cachedHttpServletRequest, responseWrapper);
 
-        body = getResBodyString(responseWrapper.getContentAsByteArray());
         headers = getResHeadersToPrint(responseWrapper);
-        requestResponseLogger.log(false, cachedHttpServletRequest.getMethod(), cachedHttpServletRequest.getRequestURI(), cachedHttpServletRequest.getProtocol(), headers, body);
+        String resPayload = getResBodyString(headers, responseWrapper.getContentAsByteArray());
+        RequestResponseLogger.log(false, cachedHttpServletRequest.getMethod(), cachedHttpServletRequest.getRequestURI(), cachedHttpServletRequest.getProtocol(), headers, resPayload);
 
         responseWrapper.copyBodyToResponse();
     }
@@ -88,13 +81,27 @@ public class LoggingFilter extends OncePerRequestFilter {
         return map;
     }
 
-    private String getRequestBodyString(CachedHttpServletRequest cachedHttpServletRequest) {
-        String result = IOUtils.toString(cachedHttpServletRequest.getInputStream(), StandardCharsets.UTF_8);
-        return result.replaceAll("\\s", "");
+    private String getRequestBodyString(Map<String, String> headers, CachedHttpServletRequest cachedHttpServletRequest) {
+
+        String contentType = headers.get(HttpHeaders.CONTENT_TYPE.toLowerCase());
+
+        if (StringUtils.hasLength(contentType) && LoggingProperties.printableContent.contains(contentType)) {
+            String result = IOUtils.toString(cachedHttpServletRequest.getInputStream(), StandardCharsets.UTF_8);
+            return result.replaceAll("\\s", "");
+        }
+
+        return null;
     }
 
-    private String getResBodyString(byte[] contentAsByteArray) {
-        String result = new String(contentAsByteArray, StandardCharsets.UTF_8);
-        return result.replaceAll("\\s", "");
+    private String getResBodyString(Map<String, String> headers, byte[] contentAsByteArray) {
+
+        String contentType = headers.get(HttpHeaders.CONTENT_TYPE.toLowerCase());
+
+        if (StringUtils.hasLength(contentType) && LoggingProperties.printableContent.contains(contentType)) {
+            String result = new String(contentAsByteArray, StandardCharsets.UTF_8);
+            return result.replaceAll("\\s", "");
+        }
+
+        return null;
     }
 }

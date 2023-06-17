@@ -7,10 +7,10 @@ package com.atique.balanceservice.enums;
 
 public enum CommonHeader {
 
-    CORRELATION_ID_HEADER("X-BS-Correlation-Id"),
-    CALLER_ID_HEADER("X-BS-Caller"),
-    ACCEPT_LANGUAGE_HEADER("X-BS-Accept-Language"),
-    USER_AGENT_HEADER("X-BS-User-Agent"),
+    CORRELATION_ID_HEADER("x-bs-correlation-id"),
+    CALLER_COMPONENT_HEADER("x-bs-caller"),
+    ACCEPT_LANGUAGE_HEADER("x-bs-accept-language"),
+    USER_AGENT_HEADER("x-bs-user-agent"),
     ;
 
     private final String value;
