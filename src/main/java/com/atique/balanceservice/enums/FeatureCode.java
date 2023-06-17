@@ -1,4 +1,4 @@
-package com.atique.balanceservice.util;
+package com.atique.balanceservice.enums;
 
 /**
  * @author atiQue

@@ -3,8 +3,9 @@ package com.atique.balanceservice.exceptionresolvers;
 import com.atique.balanceservice.exceptions.BaseException;
 import com.atique.balanceservice.exceptions.InvalidDataException;
 import com.atique.balanceservice.exceptions.InvalidRequestException;
-import com.atique.balanceservice.util.ErrorCode;
-import com.atique.balanceservice.util.FeatureCode;
+import com.atique.balanceservice.enums.ComponentCode;
+import com.atique.balanceservice.enums.ErrorCode;
+import com.atique.balanceservice.enums.FeatureCode;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ValidationException;
 import org.springframework.http.HttpStatus;
@@ -26,8 +27,8 @@ public class BaseExceptionResolver {
     private static final String REASON_SEPARATOR = "_";
     private static final String MESSAGE_SEPARATOR = ". ";
 
-    private String getComponentCode() {
-        return "00";
+    private ComponentCode getComponentCode() {
+        return ComponentCode.BALANCE_SERVICE;
     }
 
     public FeatureCode getFeatureCode() {
@@ -84,7 +85,7 @@ public class BaseExceptionResolver {
             errorMessage = new StringBuilder(errorMessage).append(MESSAGE_SEPARATOR).append(baseException.getMessage()).toString();
         }
 
-        String reason = new StringBuilder(getComponentCode()).append(REASON_SEPARATOR).append(getFeatureCode().getCode()).append(REASON_SEPARATOR).append(errorId).toString();
+        String reason = new StringBuilder(getComponentCode().getCode()).append(REASON_SEPARATOR).append(getFeatureCode().getCode()).append(REASON_SEPARATOR).append(errorId).toString();
         String message = new StringBuilder(getFeatureCode().getName()).append(MESSAGE_SEPARATOR).append(errorMessage).toString();
 
         return ErrorResponse.builder()

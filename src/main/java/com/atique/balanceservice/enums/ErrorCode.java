@@ -1,4 +1,4 @@
-package com.atique.balanceservice.util;
+package com.atique.balanceservice.enums;
 
 /**
  * @author atiQue
@@ -8,8 +8,9 @@ package com.atique.balanceservice.util;
 public enum ErrorCode {
 
     UNKNOWN_ERROR("999", "Error"),
-    INVALID_REQUEST("001", "Invalid request"),
-    INVALID_DATA_GIVEN("002", "Invalid data given"),
+    INVALID_CONFIGURATION("001", "Invalid configuration"),
+    INVALID_REQUEST("002", "Invalid request"),
+    INVALID_DATA_GIVEN("003", "Invalid data given"),
     INVALID_DATE_FORMAT("003", "Invalid date format"),
     ;
 
