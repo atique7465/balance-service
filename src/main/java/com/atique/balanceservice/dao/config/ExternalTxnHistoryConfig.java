@@ -1,4 +1,4 @@
-package com.atique.balanceservice.infrustructure;
+package com.atique.balanceservice.dao.config;
 
 import lombok.Getter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -13,6 +13,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties(prefix = "ext.txn-history")
 public class ExternalTxnHistoryConfig {
+
     private final String txnDateTimeFormat = "dd-MM-yyyy HH:mm:ss";
+
     private final String monthFormat = "MM-yyyy";
+
+    private final String url = "/api/v1/transaction-history";
 }

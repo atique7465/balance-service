@@ -1,8 +1,10 @@
 package com.atique.balanceservice.model;
 
 import com.atique.balanceservice.enums.TransactionType;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
@@ -13,6 +15,8 @@ import java.math.BigDecimal;
 
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Transaction {
     private TransactionType transactionType;
     private BigDecimal amount;

@@ -20,11 +20,9 @@ public class LoggingProperties {
 
     public static final boolean printHeader = true;
 
-    public static final boolean printUrl = true;
-
     public static final boolean printPayload = true;
 
-    public static final Integer maxPayloadSize = 1000;
+    public static final Integer maxPayloadSize = 2000;
 
     public static final List<String> printableContent = new ArrayList<>(List.of(MediaType.APPLICATION_JSON_VALUE));
 }

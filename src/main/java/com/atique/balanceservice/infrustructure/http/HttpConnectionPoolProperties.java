@@ -39,7 +39,7 @@ public class HttpConnectionPoolProperties {
      * Default: 5000 millis or 5 sec.
      * </p>
      */
-    private final Integer connectionRequestTimeout = 5000;
+    private final Integer connectionRequestTimeout = 5 * 1000;
 
     /**
      * Determines the timeout until a new connection is fully established.
@@ -50,7 +50,7 @@ public class HttpConnectionPoolProperties {
      * Default: 5000 millis or 5 sec.
      * </p>
      */
-    private final Integer connectTimeout = 5000;
+    private final Integer connectTimeout = 5 * 1000;
 
     /**
      * Determines the default of value of connection keep-alive time period when not
@@ -63,7 +63,7 @@ public class HttpConnectionPoolProperties {
      * Default: 30000 millis or 30 sec.
      * </p>
      */
-    private final Integer defaultKeepAliveTime = 30000;
+    private final Integer defaultKeepAliveTime = 30 * 1000;
 
     /**
      * Defines the total span of time connections can be kept alive or execute requests.
@@ -72,7 +72,7 @@ public class HttpConnectionPoolProperties {
      * Default: 300000 millis or 5 min.
      * </p>
      */
-    private final Integer timeToLive = 300000;
+    private final Integer timeToLive = 30 * 10000;
 
     /**
      * Defines period of inactivity after which persistent connections must be re-validated prior to being leased to the consumer.
@@ -82,7 +82,7 @@ public class HttpConnectionPoolProperties {
      * Default: 60000 millis or 60 sec.
      * </p>
      */
-    private final Integer validateAfterInactivity = 60000;
+    private final Integer validateAfterInactivity = 60 * 1000;
 
     /**
      * Determines the timeout until arrival of a response from the opposite endpoint.
@@ -93,17 +93,34 @@ public class HttpConnectionPoolProperties {
      * Please note that response timeout may be unsupported by HTTP transports with message multiplexing.
      * </p>
      * <p>
-     * Default: 10000 millis or 10 sec.
+     * Default: 5000 millis or 5 sec.
      * </p>
      */
-    private final Integer responseTimeout = 10000;
+    private final Integer responseTimeout = 5 * 1000;
 
     /**
      * Determines the default socket timeout value for blocking I/O operations.
      * <p>
-     * Default: 10000 millis or 10 sec.
+     * Default: 5000 millis or 5 sec.
      * </p>
+     *
      * @see java.net.SocketOptions#SO_TIMEOUT
      */
-    private final Integer socketTimeout = 10000;
+    private final Integer socketTimeout = 5 * 1000;
+
+    /**
+     * Make the instance of HttpClient proactively evict idle connections from the connection pool using a background thread.
+     * <p>
+     *  Default: true
+     * </p>
+     */
+    private final boolean evictIdlConnection = true;
+
+    /**
+     * HttpClient proactively evict idle connections from the connection pool using a background thread after this time.
+     * <p>
+     *  Default: 30000 millis or 30 sec.
+     * </p>
+     */
+    private final Integer evictIdlConnectionAfter = 30 * 1000;
 }

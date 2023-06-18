@@ -1,0 +1,38 @@
+#################### Server Configuration ####################
+server:
+  port: 8084
+  servlet.context-path: /balance-service-1.0
+  tomcat:
+    accept-count: 100
+    threads:
+      min-spare: 10
+      max: 200
+
+#################### Management Configuration ####################
+management:
+  server:
+    port: 8085
+  info:
+    git:
+      enabled: true
+    build:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  
+#################### External Route Configuration ####################
+http.route.map:
+  THS:
+    scheme: http
+    host: localhost
+    port: 8086
+    contextPath: /transaction-history-service-1.0
+    maxConnection: 200
+
+  
+  #http://localhost:8084/balance-service-1.0/swagger-ui/index.html
+  #localhost:8085/actuator/info
+
+#  logging.level.org.springframework.web.filter.CommonsRequestLoggingFilter:DEBUG

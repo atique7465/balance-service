@@ -1,49 +1,50 @@
 package com.atique.balanceservice.dao;
 
-import com.atique.balanceservice.enums.TransactionType;
-import com.atique.balanceservice.model.Transaction;
+import com.atique.balanceservice.dao.config.ExternalTxnHistoryConfig;
+import com.atique.balanceservice.enums.ErrorCode;
+import com.atique.balanceservice.exceptions.BaseException;
+import com.atique.balanceservice.infrustructure.ApplicationProperties;
+import com.atique.balanceservice.infrustructure.gateway.ApiGateWay;
 import com.atique.balanceservice.model.TransactionHistory;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * @author atiQue
  * @since 15'Jun 2023 at 12:09 AM
  */
 
+@Slf4j
 @Repository
 public class TransactionHistoryDaoImpl implements TransactionHistoryDao {
 
+    private static final String CIRCUIT_BREAKER_NAME = "transaction-history-service";
+
+    private final ExternalTxnHistoryConfig config;
+    private final ApplicationProperties applicationProperties;
+    private final ApiGateWay apiGateWay;
+
+    public TransactionHistoryDaoImpl(ExternalTxnHistoryConfig config, ApplicationProperties applicationProperties,
+                                     @Qualifier(value = "common-api-gateway") ApiGateWay apiGateWay) {
+        this.config = config;
+        this.applicationProperties = applicationProperties;
+        this.apiGateWay = apiGateWay;
+    }
+
     @Override
+    @CircuitBreaker(name = CIRCUIT_BREAKER_NAME)
     public TransactionHistory getHistory(String accNo) {
 
-        List<Transaction> content = new ArrayList<>(
-                Arrays.asList(
-                        Transaction.builder().transactionType(TransactionType.CREDIT).amount(new BigDecimal(1000)).approvalDateTime("01-08-2022 10:45:01").build(),
-                        Transaction.builder().transactionType(TransactionType.CREDIT).amount(new BigDecimal(100)).approvalDateTime("01-05-2023 10:45:01").build(),
-                        Transaction.builder().transactionType(TransactionType.CREDIT).amount(new BigDecimal(150)).approvalDateTime("01-05-2023 10:45:02").build(),
-                        Transaction.builder().transactionType(TransactionType.DEBIT).amount(new BigDecimal(50)).approvalDateTime("02-06-2023 10:45:01").build(),
-                        Transaction.builder().transactionType(TransactionType.CREDIT).amount(new BigDecimal(100)).approvalDateTime("03-05-2023 10:45:01").build(),
-                        Transaction.builder().transactionType(TransactionType.DEBIT).amount(new BigDecimal(100)).approvalDateTime("04-05-2023 10:45:01").build(),
-                        Transaction.builder().transactionType(TransactionType.DEBIT).amount(new BigDecimal(10)).approvalDateTime("05-05-2023 10:45:01").build(),
-                        Transaction.builder().transactionType(TransactionType.CREDIT).amount(new BigDecimal(100)).approvalDateTime("06-07-2023 10:45:01").build(),
-                        Transaction.builder().transactionType(TransactionType.CREDIT).amount(new BigDecimal(500)).approvalDateTime("07-05-2023 10:45:01").build(),
-                        Transaction.builder().transactionType(TransactionType.DEBIT).amount(new BigDecimal(100)).approvalDateTime("31-05-2023 10:45:01").build(),
-                        Transaction.builder().transactionType(TransactionType.CREDIT).amount(new BigDecimal(100)).approvalDateTime("01-06-2023 11:45:01").build(),
-                        Transaction.builder().transactionType(TransactionType.DEBIT).amount(new BigDecimal(60)).approvalDateTime("01-06-2023 10:46:01").build(),
-                        Transaction.builder().transactionType(TransactionType.CREDIT).amount(new BigDecimal(100)).approvalDateTime("01-06-2023 10:45:02").build(),
-                        Transaction.builder().transactionType(TransactionType.DEBIT).amount(new BigDecimal(50)).approvalDateTime("30-06-2023 10:45:01").build(),
-                        Transaction.builder().transactionType(TransactionType.CREDIT).amount(new BigDecimal(1000)).approvalDateTime("30-06-2023 10:46:01").build(),
-                        Transaction.builder().transactionType(TransactionType.DEBIT).amount(new BigDecimal(200)).approvalDateTime("01-07-2023 10:45:01").build(),
-                        Transaction.builder().transactionType(TransactionType.CREDIT).amount(new BigDecimal(100)).approvalDateTime("02-07-2023 10:45:01").build(),
-                        Transaction.builder().transactionType(TransactionType.CREDIT).amount(new BigDecimal(100)).approvalDateTime("02-04-2022 10:45:01").build()
-                )
-        );
+        String url = UriComponentsBuilder.fromUriString(applicationProperties.getThsBasePath())
+                .path(config.getUrl())
+                .path("/")
+                .path(accNo).toUriString();
 
-        return TransactionHistory.builder().content(content).build();
+        return apiGateWay.GET(url, TransactionHistory.class);
     }
 }

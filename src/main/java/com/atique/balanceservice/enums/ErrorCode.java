@@ -7,10 +7,16 @@ package com.atique.balanceservice.enums;
 
 public enum ErrorCode {
 
+    //Reserved Code Range [900 - 999]
     UNKNOWN_ERROR("999", "Error"),
-    INVALID_CONFIGURATION("001", "Invalid configuration"),
-    INVALID_REQUEST("002", "Invalid request"),
-    INVALID_DATA_GIVEN("003", "Invalid data given"),
+    SERVICE_UNAVAILABLE("998", "Service unavailable"),
+    EXT_SERVICE_ERR_RES_PARSE_ERROR("997", "Can not parse external service error response"),
+
+
+    //Other Error Code Range [000 - 889]
+    INVALID_CONFIGURATION("000", "Invalid configuration"),
+    INVALID_REQUEST("001", "Invalid request"),
+    INVALID_DATA_GIVEN("002", "Invalid data given"),
     INVALID_DATE_FORMAT("003", "Invalid date format"),
     ;
 

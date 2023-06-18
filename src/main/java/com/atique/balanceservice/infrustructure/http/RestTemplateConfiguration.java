@@ -1,8 +1,11 @@
 package com.atique.balanceservice.infrustructure.http;
 
+import com.atique.balanceservice.exceptionresolvers.ErrorResponse;
 import com.atique.balanceservice.exceptions.InvalidConfigurationException;
 import com.atique.balanceservice.infrustructure.gateway.ApiGateWay;
 import com.atique.balanceservice.infrustructure.gateway.ApiGateWayImpl;
+import com.atique.balanceservice.infrustructure.http.errorextractors.CommonErrorResponseExtractor;
+import com.atique.balanceservice.infrustructure.http.errorextractors.ErrorResponseExtractor;
 import com.atique.balanceservice.infrustructure.logging.ApiGatewayInterceptor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +14,7 @@ import org.apache.hc.client5.http.config.ConnectionConfig;
 import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.cookie.StandardCookieSpec;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
 import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder;
@@ -24,10 +28,13 @@ import org.apache.hc.core5.http.ssl.TLS;
 import org.apache.hc.core5.pool.PoolConcurrencyPolicy;
 import org.apache.hc.core5.pool.PoolReusePolicy;
 import org.apache.hc.core5.ssl.SSLContexts;
+import org.apache.hc.core5.util.TimeValue;
 import org.apache.hc.core5.util.Timeout;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -55,17 +62,34 @@ public class RestTemplateConfiguration {
     }
 
     @Bean(value = "common-api-gateway")
+    @Primary
     public ApiGateWay getApiGateWay() {
-        return new ApiGateWayImpl(creteRestTemplate());
+        return new ApiGateWayImpl(creteRestTemplate(new CommonErrorResponseExtractor(objectMapper)));
+    }
+
+    public RestTemplate creteRestTemplate(ErrorResponseExtractor<? extends ErrorResponse> errorResponseExtractor) {
+
+        RestTemplate restTemplate = creteRestTemplate();
+        restTemplate.setErrorHandler(new CommonErrorHandler(errorResponseExtractor));
+
+        return restTemplate;
     }
 
     @Bean
+    @ConditionalOnMissingBean(RestTemplate.class)
+    @Primary
+    public RestTemplate getRestTemplate() {
+        return creteRestTemplate();
+    }
+
     public RestTemplate creteRestTemplate() {
+
         RestTemplateBuilder builder = new RestTemplateBuilder()
                 .requestFactory(() -> new BufferingClientHttpRequestFactory(getRequestFactory()))
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .messageConverters(getMappingJackson2HttpMessageConverter())
                 .additionalInterceptors(new ApiGatewayInterceptor());
+
         return builder.build();
     }
 
@@ -86,10 +110,15 @@ public class RestTemplateConfiguration {
                 .setConnectionKeepAlive(Timeout.ofMilliseconds(poolProps.getDefaultKeepAliveTime()))
                 .build();
 
-        return HttpClients.custom()
+        HttpClientBuilder builder = HttpClients.custom()
                 .setConnectionManager(gePoolingHttpClientConnectionManager())
-                .setDefaultRequestConfig(requestConfig)
-                .build();
+                .setDefaultRequestConfig(requestConfig);
+
+        if (poolProps.isEvictIdlConnection()) {
+            builder.evictIdleConnections(TimeValue.ofMilliseconds(poolProps.getEvictIdlConnectionAfter()));
+        }
+
+        return builder.build();
     }
 
     private static final URIScheme DEFAULT_SCHEME = URIScheme.HTTP;
@@ -103,6 +132,8 @@ public class RestTemplateConfiguration {
                 .build();
 
         SocketConfig socketConfig = SocketConfig.custom()
+                .setSoKeepAlive(true)
+                .setSoReuseAddress(true)
                 .setSoTimeout(Timeout.ofMilliseconds(poolProps.getSocketTimeout()))
                 .build();
 

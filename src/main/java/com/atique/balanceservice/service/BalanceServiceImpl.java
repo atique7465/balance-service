@@ -2,7 +2,7 @@ package com.atique.balanceservice.service;
 
 import com.atique.balanceservice.dao.TransactionHistoryDao;
 import com.atique.balanceservice.enums.TransactionType;
-import com.atique.balanceservice.infrustructure.ExternalTxnHistoryConfig;
+import com.atique.balanceservice.dao.config.ExternalTxnHistoryConfig;
 import com.atique.balanceservice.model.Balance;
 import com.atique.balanceservice.model.BalanceSummary;
 import com.atique.balanceservice.model.Transaction;

@@ -1,5 +1,8 @@
 package com.atique.balanceservice.infrustructure.gateway;
 
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -25,5 +28,10 @@ public class ApiGateWayImpl implements ApiGateWay {
     @Override
     public <T> T POST(String url, Object request, Class<T> responseType) {
         return restTemplate.postForObject(url, request, responseType);
+    }
+
+    @Override
+    public <T> ResponseEntity<T> exchange(String url, HttpMethod method, HttpEntity<?> requestEntity, Class<T> responseType) {
+        return restTemplate.exchange(url, method, requestEntity, responseType);
     }
 }
