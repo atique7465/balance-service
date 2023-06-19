@@ -1,12 +1,9 @@
 package com.atique.balanceservice.infrustructure.circuitbreaker;
 
-import com.atique.balanceservice.exceptions.BaseException;
-import com.atique.balanceservice.exceptions.ExternalServiceException;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.client.ResourceAccessException;
 
 import java.time.Duration;
 
@@ -18,20 +15,27 @@ import java.time.Duration;
 @Configuration
 public class CircuitBreakerConfiguration {
 
+    private final CircuitBreakerProperties props;
+
+    public CircuitBreakerConfiguration(CircuitBreakerProperties props) {
+        this.props = props;
+    }
+
+
     @Bean
     public CircuitBreakerRegistry getCircuitBreakerRegistry() {
 
         CircuitBreakerConfig circuitBreakerConfig = CircuitBreakerConfig.custom()
-                .slidingWindowSize(10)
-                .minimumNumberOfCalls(5)
-                .failureRateThreshold(50)
-                .slowCallRateThreshold(50)
-                .slowCallDurationThreshold(Duration.ofSeconds(2))
-                .permittedNumberOfCallsInHalfOpenState(3)
-                .waitDurationInOpenState(Duration.ofSeconds(5))
-                .slidingWindowType(CircuitBreakerConfig.SlidingWindowType.COUNT_BASED)
-                .recordExceptions(ResourceAccessException.class)
-                .ignoreExceptions(BaseException.class, ExternalServiceException.class)
+                .slidingWindowSize(props.getSlidingWindowSize())
+                .minimumNumberOfCalls(props.getMinimumNumberOfCalls())
+                .failureRateThreshold(props.getFailureRateThreshold())
+                .slowCallRateThreshold(props.getSlowCallRateThreshold())
+                .slowCallDurationThreshold(Duration.ofSeconds(props.getSlowCallDurationThreshold()))
+                .permittedNumberOfCallsInHalfOpenState(props.getPermittedNumberOfCallsInHalfOpenState())
+                .waitDurationInOpenState(Duration.ofSeconds(props.getWaitDurationInOpenState()))
+                .slidingWindowType(props.slidingWindowType)
+                .recordExceptions(props.getRecordExceptions())
+                .ignoreExceptions(props.getIgnoreExceptions())
                 .build();
 
         return CircuitBreakerRegistry.of(circuitBreakerConfig);
