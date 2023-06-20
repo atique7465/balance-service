@@ -2,11 +2,12 @@ package com.atique.balanceservice.infrustructure.http;
 
 import com.atique.balanceservice.exceptionresolvers.ErrorResponse;
 import com.atique.balanceservice.exceptions.InvalidConfigurationException;
+import com.atique.balanceservice.infrustructure.correlation.CorrelationApiGatewayInterceptor;
 import com.atique.balanceservice.infrustructure.gateway.ApiGateWay;
 import com.atique.balanceservice.infrustructure.gateway.ApiGateWayImpl;
 import com.atique.balanceservice.infrustructure.http.errorextractors.CommonErrorResponseExtractor;
 import com.atique.balanceservice.infrustructure.http.errorextractors.ErrorResponseExtractor;
-import com.atique.balanceservice.infrustructure.logging.ApiGatewayInterceptor;
+import com.atique.balanceservice.infrustructure.logging.LoggerApiGatewayInterceptor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.hc.client5.http.HttpRoute;
@@ -41,6 +42,8 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.Arrays;
 
 /**
  * @author atiQue
@@ -88,7 +91,7 @@ public class RestTemplateConfiguration {
                 .requestFactory(() -> new BufferingClientHttpRequestFactory(getRequestFactory()))
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .messageConverters(getMappingJackson2HttpMessageConverter())
-                .additionalInterceptors(new ApiGatewayInterceptor());
+                .additionalInterceptors(Arrays.asList(new CorrelationApiGatewayInterceptor(), new LoggerApiGatewayInterceptor()));
 
         return builder.build();
     }

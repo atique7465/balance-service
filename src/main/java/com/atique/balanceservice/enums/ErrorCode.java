@@ -11,6 +11,9 @@ public enum ErrorCode {
     UNKNOWN_ERROR("999", "Error"),
     SERVICE_UNAVAILABLE("998", "Service unavailable"),
     EXT_SERVICE_ERR_RES_PARSE_ERROR("997", "Can not parse external service error response"),
+    EXT_SERVICE_UNAVAILABLE("996", "External service - unavailable"),
+    EXT_SERVICE_READ_TIME_OUT("995", "External service - read time out"),
+    EXT_SERVICE_CALL_NOT_PERMITTED("994", "External service - call not permitted. Circuit is open"),
 
 
     //Other Error Code Range [000 - 889]

@@ -4,6 +4,7 @@ import com.atique.balanceservice.enums.ComponentCode;
 import com.atique.balanceservice.enums.ErrorCode;
 import com.atique.balanceservice.enums.FeatureCode;
 import com.atique.balanceservice.exceptions.*;
+import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.client.ResourceAccessException;
 
 /**
  * @author atiQue
@@ -85,6 +87,12 @@ public class BaseExceptionResolver {
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler({Exception.class})
     public ErrorResponse handleGeneralJavaException(Exception exception) {
+
+        // Handle external resource exceptions
+        if (exception instanceof ResourceAccessException || exception instanceof CallNotPermittedException) {
+            return getErrorResponseAndLogResourceExceptions(new BaseException(exception));
+        }
+
         return getErrorResponseAndLogException(new BaseException(exception));
     }
 
@@ -110,6 +118,45 @@ public class BaseExceptionResolver {
         if (exception.getErrorCode() != null) {
             errorId = exception.getErrorCode().getId();
             errorMessage = exception.getErrorCode().getMessage();
+        }
+
+        if (StringUtils.hasLength(exception.getMessage())) {
+            errorMessage = new StringBuilder(errorMessage).append(MESSAGE_SEPARATOR).append(exception.getMessage()).toString();
+        }
+
+        String reason = new StringBuilder(getComponentCode().getCode()).append(REASON_SEPARATOR).append(getFeatureCode().getCode()).append(REASON_SEPARATOR).append(errorId).toString();
+        String message = new StringBuilder(getFeatureCode().getName()).append(MESSAGE_SEPARATOR).append(errorMessage).toString();
+
+        log.error("[Error Details]:", exception);
+
+        return ErrorResponse.builder()
+                .reason(reason)
+                .message(message)
+                .build();
+    }
+
+    private ErrorResponse getErrorResponseAndLogResourceExceptions(BaseException exception) {
+
+        String errorId;
+        String errorMessage;
+
+        if (exception.getException() instanceof CallNotPermittedException) {
+            errorId = ErrorCode.EXT_SERVICE_CALL_NOT_PERMITTED.getId();
+            errorMessage = ErrorCode.EXT_SERVICE_CALL_NOT_PERMITTED.getMessage();
+
+        } else if (exception.getException() instanceof ResourceAccessException) {
+            String exceptionMessage = exception.getException().getCause().toString();
+            if (exceptionMessage.contains("java.net.SocketTimeoutException: Read timed out")) {
+                errorId = ErrorCode.EXT_SERVICE_READ_TIME_OUT.getId();
+                errorMessage = ErrorCode.EXT_SERVICE_READ_TIME_OUT.getMessage();
+            } else {
+                errorId = ErrorCode.EXT_SERVICE_UNAVAILABLE.getId();
+                errorMessage = ErrorCode.EXT_SERVICE_UNAVAILABLE.getMessage();
+            }
+
+        } else {
+            errorId = ErrorCode.UNKNOWN_ERROR.getId();
+            errorMessage = ErrorCode.UNKNOWN_ERROR.getMessage();
         }
 
         if (StringUtils.hasLength(exception.getMessage())) {

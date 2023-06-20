@@ -12,6 +12,8 @@ public class BaseException extends RuntimeException {
     private ErrorCode errorCode;
     private String message;
 
+    private Exception exception;
+
     public BaseException() {
     }
 
@@ -26,17 +28,20 @@ public class BaseException extends RuntimeException {
 
     public BaseException(Exception exception) {
         super(exception);
+        this.exception = exception;
         this.message = exception.getMessage();
     }
 
     public BaseException(ErrorCode errorCode, Exception exception) {
         super(exception);
+        this.exception = exception;
         this.errorCode = errorCode;
         this.message = exception.getMessage();
     }
 
     public BaseException(ErrorCode errorCode, String message, Exception exception) {
         super(exception);
+        this.exception = exception;
         this.errorCode = errorCode;
         this.message = message;
     }
@@ -48,5 +53,9 @@ public class BaseException extends RuntimeException {
     @Override
     public String getMessage() {
         return message;
+    }
+
+    public Exception getException() {
+        return exception;
     }
 }

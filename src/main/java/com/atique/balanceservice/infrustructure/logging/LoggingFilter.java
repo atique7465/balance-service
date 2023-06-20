@@ -21,7 +21,7 @@ import java.io.IOException;
 
 @Component
 @WebFilter(filterName = "LoggingFilter", urlPatterns = "/*")
-@Order(value = Ordered.HIGHEST_PRECEDENCE)
+@Order(value = 1)
 @Slf4j
 public class LoggingFilter extends OncePerRequestFilter {
 

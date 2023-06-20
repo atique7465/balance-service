@@ -47,7 +47,7 @@ public class CircuitBreakerProperties {
      * <p>
      * The threshold must be greater than 0 and not greater than 100.
      * <p>
-     * Default:50 %.
+     * Default: 50 %.
      */
     public final int failureRateThreshold = 50;
 
