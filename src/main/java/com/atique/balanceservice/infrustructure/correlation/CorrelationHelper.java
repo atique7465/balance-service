@@ -3,6 +3,7 @@ package com.atique.balanceservice.infrustructure.correlation;
 import com.atique.balanceservice.enums.ComponentCode;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.tomcat.util.http.HeaderUtil;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Component;
@@ -42,6 +43,12 @@ public class CorrelationHelper {
         if (!StringUtils.hasLength(correlationID)) {
             RequestContext.put(CorrelationHeader.CORRELATION_ID_HEADER.getValue(), generateCorrelationId());
         }
+
+        //If this is the first service then set Caller Service header
+        String callerService = RequestContext.get(CorrelationHeader.CALLER_SERVICE_HEADER.getValue());
+        if (!StringUtils.hasLength(callerService)) {
+            RequestContext.put(CorrelationHeader.CALLER_SERVICE_HEADER.getValue(), "CLIENT");
+        }
     }
 
     private static String generateCorrelationId() {
@@ -55,7 +62,8 @@ public class CorrelationHelper {
         String randomHex;
         Random random = new Random();
         randomHex = Integer.toHexString(random.nextInt());
-        return randomHex.substring(0, CORRELATION_HEX_STRING_LEN);
+        StringBuilder str = new StringBuilder(randomHex).append("0000000000");
+        return str.substring(0, CORRELATION_HEX_STRING_LEN);
     }
 
 
@@ -65,9 +73,13 @@ public class CorrelationHelper {
      * @param response HttpServletResponse
      */
     public static void updateHeaders(HttpServletResponse response) {
+
         for (CorrelationHeader header : CorrelationHeader.values()) {
+
+            if (header == CorrelationHeader.USER_AGENT_HEADER) continue;
+
             String value = RequestContext.get(header.getValue());
-            if (StringUtils.hasLength(value)) {
+            if (StringUtils.hasLength(value) && !StringUtils.hasLength(response.getHeader(header.getValue()))) {
                 response.setHeader(header.getValue(), value);
             }
         }
@@ -98,6 +110,9 @@ public class CorrelationHelper {
     public static void updateRequestContext(ClientHttpResponse response) {
 
         for (CorrelationHeader header : CorrelationHeader.values()) {
+
+            if (header == CorrelationHeader.USER_AGENT_HEADER) continue;
+
             String value = response.getHeaders().getFirst(header.getValue());
             if (StringUtils.hasLength(value)) {
                 RequestContext.put(header.getValue(), value);

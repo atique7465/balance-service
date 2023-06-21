@@ -1,8 +1,8 @@
 package com.atique.balanceservice.service;
 
 import com.atique.balanceservice.dao.TransactionHistoryDao;
-import com.atique.balanceservice.enums.TransactionType;
 import com.atique.balanceservice.dao.config.ExternalTxnHistoryConfig;
+import com.atique.balanceservice.enums.TransactionType;
 import com.atique.balanceservice.model.Balance;
 import com.atique.balanceservice.model.BalanceSummary;
 import com.atique.balanceservice.model.Transaction;
@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  * @author atiQue
@@ -33,7 +35,7 @@ public class BalanceServiceImpl implements BalanceService {
     @Override
     public BalanceSummary getSummaryByAccNo(String accNo) {
 
-        BalanceSummary summary = BalanceSummary.builder().content(new TreeMap<>()).build(); //todo: need to sort
+        BalanceSummary summary = BalanceSummary.builder().content(new ArrayList<>()).build();
 
         if (!StringUtils.hasLength(accNo)) return summary;
 
@@ -46,6 +48,7 @@ public class BalanceServiceImpl implements BalanceService {
 
         if (history == null || history.getContent() == null || history.getContent().isEmpty()) return summary;
 
+        //Sort the history order by Transaction ApprovalDateTime in ASC
         history.getContent().sort(Comparator.comparing(t -> DateUtils.convertToDate(t.getApprovalDateTime(), externalTxnHistoryConfig.getTxnDateTimeFormat())));
 
         BigDecimal cumulativeBalance = BigDecimal.ZERO;
@@ -57,7 +60,7 @@ public class BalanceServiceImpl implements BalanceService {
             String currentMonth = getMonth(t.getApprovalDateTime());
 
             if (!currentMonth.equals(month)) {
-                summary.getContent().put(month, Balance.builder().monthlyBalance(monthlyBalance).cumulativeBalance(cumulativeBalance).build());
+                summary.getContent().add(getBalance(month, monthlyBalance, cumulativeBalance));
                 monthlyBalance = BigDecimal.ZERO;
                 month = currentMonth;
             }
@@ -71,9 +74,18 @@ public class BalanceServiceImpl implements BalanceService {
             }
         }
 
-        summary.getContent().put(month, Balance.builder().monthlyBalance(monthlyBalance).cumulativeBalance(cumulativeBalance).build());
+        //Append Last month balance
+        summary.getContent().add(getBalance(month, monthlyBalance, cumulativeBalance));
 
         return summary;
+    }
+
+    private static Balance getBalance(String month, BigDecimal monthlyBalance, BigDecimal cumulativeBalance) {
+        return Balance.builder()
+                .month(month)
+                .monthlyBalance(monthlyBalance.setScale(2, RoundingMode.DOWN))
+                .cumulativeBalance(cumulativeBalance.setScale(2, RoundingMode.DOWN))
+                .build();
     }
 
     private String getMonth(String dateStr) {

@@ -13,15 +13,10 @@ management:
   server:
     port: 8085
   info:
-    git:
-      enabled: true
-    build:
-      enabled: true
-  endpoints:
-    web:
-      exposure:
-        include: health,info
-  
+    git.enabled: true
+    build.enabled: true
+  endpoints.web.exposure.include: '*'
+
 #################### External Route Configuration ####################
 http.route.map:
   THS:
@@ -34,5 +29,3 @@ http.route.map:
   
   #http://localhost:8084/balance-service-1.0/swagger-ui/index.html
   #localhost:8085/actuator/info
-
-#  logging.level.org.springframework.web.filter.CommonsRequestLoggingFilter:DEBUG

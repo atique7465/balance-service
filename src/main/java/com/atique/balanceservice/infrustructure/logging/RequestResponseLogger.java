@@ -1,5 +1,7 @@
 package com.atique.balanceservice.infrustructure.logging;
 
+import com.atique.balanceservice.infrustructure.correlation.CorrelationHeader;
+import com.atique.balanceservice.infrustructure.correlation.RequestContext;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpResponse;
@@ -32,8 +34,8 @@ public class RequestResponseLogger {
         if (LoggingProperties.printPayload && LoggingProperties.printableContent.contains(cachedHttpServletRequest.getContentType())) {
             payLoad = LoggerHelper.getPayloadToPrint(cachedHttpServletRequest);
         }
-
         log(
+                RequestContext.get(CorrelationHeader.CALLER_SERVICE_HEADER.getValue()),
                 REQ,
                 cachedHttpServletRequest.getMethod(),
                 cachedHttpServletRequest.getRequestURI(),
@@ -54,7 +56,8 @@ public class RequestResponseLogger {
             payLoad = LoggerHelper.getPayloadToPrint(responseWrapper.getContentAsByteArray());
         }
 
-        RequestResponseLogger.log(
+        log(
+                null,
                 RES,
                 cachedHttpServletRequest.getMethod(),
                 cachedHttpServletRequest.getRequestURI(),
@@ -79,6 +82,7 @@ public class RequestResponseLogger {
         }
 
         log(
+                null,
                 REQ,
                 request.getMethod().name(),
                 request.getURI().toString(),
@@ -102,7 +106,8 @@ public class RequestResponseLogger {
             payLoad = LoggerHelper.getPayloadToPrint(response);
         }
 
-        RequestResponseLogger.log(
+        log(
+                null,
                 RES,
                 request.getMethod().name(),
                 request.getURI().toString(),
@@ -115,10 +120,16 @@ public class RequestResponseLogger {
     }
 
 
-    private static void log(String prefix, String method, String uri, String httpStatus, String protocol, String processingTime, Map<String, String> headers, String payLoad) {
+    private static void log(String fromService, String prefix, String method, String uri, String httpStatus, String protocol, String processingTime, Map<String, String> headers, String payLoad) {
+
+        StringBuilder msg = new StringBuilder();
+
+        if (StringUtils.hasLength(fromService)) {
+            msg.append("[FROM:").append(fromService).append("] ");
+        }
 
         // Log Method, URL
-        StringBuilder msg = new StringBuilder(prefix).append(" ").append(method).append(" ").append(uri).append(" ");
+        msg.append(prefix).append(" ").append(method).append(" ").append(uri).append(" ");
 
         //Log Http Status
         if (StringUtils.hasLength(httpStatus)) {

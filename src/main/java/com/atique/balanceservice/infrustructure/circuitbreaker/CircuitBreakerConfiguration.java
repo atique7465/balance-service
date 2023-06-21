@@ -39,11 +39,6 @@ public class CircuitBreakerConfiguration {
                 .ignoreExceptions(props.getIgnoreExceptions())
                 .build();
 
-        CircuitBreakerRegistry circuitBreakerRegistry = CircuitBreakerRegistry.of(circuitBreakerConfig);
-
-//        circuitBreakerRegistry.circuitBreaker("transaction-history-service")
-//                .getEventPublisher().onStateTransition(event -> log.info("Something : ", event));
-
-        return circuitBreakerRegistry;
+        return CircuitBreakerRegistry.of(circuitBreakerConfig);
     }
 }

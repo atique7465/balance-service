@@ -166,6 +166,7 @@ public class RestTemplateConfiguration {
                 }
                 HttpRoute httpRoute = new HttpRoute(new HttpHost(StringUtils.hasLength(v.getScheme()) ? v.getScheme() : DEFAULT_SCHEME.id, v.getHost(), v.getPort()));
                 connectionManager.setMaxPerRoute(httpRoute, v.getMaxConnection());
+                log.info("Max Connection: {} set to Route: {}", v.getMaxConnection(), httpRoute);
             }
         });
 

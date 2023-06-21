@@ -2,6 +2,7 @@ package com.atique.balanceservice.exceptions;
 
 import com.atique.balanceservice.exceptionresolvers.ErrorResponse;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
  */
 
 @Data
+@EqualsAndHashCode(callSuper=false)
 public class ExternalServiceException extends RuntimeException {
     private HttpStatus status;
     private ErrorResponse errorResponse;
