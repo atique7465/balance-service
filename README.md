@@ -11,10 +11,11 @@ This service is design to facilitate customers of a financial organisation who w
 ### Remote Deployment
 1. run the build task or go to terminal and execute
    ```
-   $ ./gradlew clean build
-   
-   //or configure the termonal with gradle and jdk and execute
+   //configure the termonal with gradle and jdk and execute
    $ gradle clean build
+   
+   //or
+   $ ./gradlew clean build
    ```
 2. after execution and executable jar **_[balance-service-1.0.jar]_** will be generated in _./build/libs_ directory
 3. deploy the jar to remote server and execute bellow command to run the jar
