@@ -1,4 +1,4 @@
-package com.atique.balanceservice.exceptionresolvers.enums;
+package com.atique.balanceservice.infrustructure.exceptionresolver.enums;
 
 /**
  * @author atiQue

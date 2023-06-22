@@ -1,6 +1,6 @@
 package com.atique.balanceservice.infrustructure.correlation;
 
-import com.atique.balanceservice.exceptionresolvers.enums.ComponentCode;
+import com.atique.balanceservice.infrustructure.exceptionresolver.enums.ComponentCode;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpRequest;

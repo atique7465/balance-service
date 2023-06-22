@@ -1,4 +1,4 @@
-package com.atique.balanceservice.annotations;
+package com.atique.balanceservice.infrustructure.annotations;
 
 
 import jakarta.validation.Constraint;

@@ -1,6 +1,6 @@
-package com.atique.balanceservice.annotations;
+package com.atique.balanceservice.infrustructure.annotations;
 
-import com.atique.balanceservice.util.Constants;
+import com.atique.balanceservice.infrustructure.util.Constants;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.util.StringUtils;

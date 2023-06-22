@@ -1,11 +1,10 @@
-package com.atique.balanceservice.exceptionresolvers;
+package com.atique.balanceservice.infrustructure.exceptionresolver;
 
-import com.atique.balanceservice.exceptionresolvers.exceptions.*;
-import com.atique.balanceservice.exceptionresolvers.enums.ComponentCode;
-import com.atique.balanceservice.exceptionresolvers.enums.ErrorCode;
-import com.atique.balanceservice.exceptionresolvers.enums.FeatureCode;
-import com.atique.balanceservice.exceptionresolvers.model.ErrorResponse;
-import com.atique.balanceservice.exceptions.*;
+import com.atique.balanceservice.infrustructure.exceptionresolver.enums.ComponentCode;
+import com.atique.balanceservice.infrustructure.exceptionresolver.enums.ErrorCode;
+import com.atique.balanceservice.infrustructure.exceptionresolver.enums.FeatureCode;
+import com.atique.balanceservice.infrustructure.exceptionresolver.exception.*;
+import com.atique.balanceservice.infrustructure.exceptionresolver.model.ErrorResponse;
 import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.ValidationException;

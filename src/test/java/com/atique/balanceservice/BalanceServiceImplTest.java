@@ -3,7 +3,7 @@ package com.atique.balanceservice;
 import com.atique.balanceservice.dao.TransactionHistoryDao;
 import com.atique.balanceservice.dao.config.ExternalTxnHistoryConfig;
 import com.atique.balanceservice.dao.enums.TransactionType;
-import com.atique.balanceservice.exceptionresolvers.exceptions.InvalidDataException;
+import com.atique.balanceservice.infrustructure.exceptionresolver.exception.InvalidDataException;
 import com.atique.balanceservice.controller.model.Balance;
 import com.atique.balanceservice.controller.model.BalanceSummary;
 import com.atique.balanceservice.dao.model.Transaction;

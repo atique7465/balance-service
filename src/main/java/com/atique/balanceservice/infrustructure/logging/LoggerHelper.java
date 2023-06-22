@@ -1,6 +1,6 @@
 package com.atique.balanceservice.infrustructure.logging;
 
-import com.atique.balanceservice.exceptionresolvers.exceptions.InvalidDataException;
+import com.atique.balanceservice.infrustructure.exceptionresolver.exception.InvalidDataException;
 import io.micrometer.core.instrument.util.IOUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.client.ClientHttpResponse;

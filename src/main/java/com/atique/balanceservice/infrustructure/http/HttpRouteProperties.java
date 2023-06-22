@@ -1,7 +1,7 @@
 package com.atique.balanceservice.infrustructure.http;
 
-import com.atique.balanceservice.exceptionresolvers.exceptions.InvalidConfigurationException;
-import com.atique.balanceservice.exceptionresolvers.enums.ComponentCode;
+import com.atique.balanceservice.infrustructure.exceptionresolver.exception.InvalidConfigurationException;
+import com.atique.balanceservice.infrustructure.exceptionresolver.enums.ComponentCode;
 import lombok.Data;
 import org.apache.hc.core5.http.HttpHost;
 import org.apache.hc.core5.net.Host;

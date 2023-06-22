@@ -2,9 +2,9 @@ package com.atique.balanceservice.dao;
 
 import com.atique.balanceservice.dao.config.ExternalTxnHistoryConfig;
 import com.atique.balanceservice.infrustructure.ApplicationProperties;
-import com.atique.balanceservice.infrustructure.gateway.ApiGateWay;
+import com.atique.balanceservice.infrustructure.http.gateway.ApiGateWay;
 import com.atique.balanceservice.dao.model.TransactionHistory;
-import com.atique.balanceservice.util.Constants;
+import com.atique.balanceservice.infrustructure.util.Constants;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;

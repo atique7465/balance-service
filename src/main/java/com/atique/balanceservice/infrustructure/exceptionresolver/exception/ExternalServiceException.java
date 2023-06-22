@@ -1,6 +1,6 @@
-package com.atique.balanceservice.exceptionresolvers.exceptions;
+package com.atique.balanceservice.infrustructure.exceptionresolver.exception;
 
-import com.atique.balanceservice.exceptionresolvers.model.ErrorResponse;
+import com.atique.balanceservice.infrustructure.exceptionresolver.model.ErrorResponse;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.http.HttpStatus;

@@ -1,6 +1,6 @@
 package com.atique.balanceservice.controller;
 
-import com.atique.balanceservice.annotations.ValidAccountNo;
+import com.atique.balanceservice.infrustructure.annotations.ValidAccountNo;
 import com.atique.balanceservice.controller.model.BalanceSummary;
 import com.atique.balanceservice.service.BalanceService;
 import io.swagger.v3.oas.annotations.Operation;

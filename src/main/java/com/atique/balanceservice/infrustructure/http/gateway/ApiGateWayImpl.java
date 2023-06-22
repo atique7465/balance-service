@@ -1,4 +1,4 @@
-package com.atique.balanceservice.infrustructure.gateway;
+package com.atique.balanceservice.infrustructure.http.gateway;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;

@@ -1,5 +1,6 @@
 package com.atique.balanceservice.infrustructure.http.errorextractors;
 
+import com.atique.balanceservice.infrustructure.exceptionresolver.model.ErrorResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**
@@ -16,7 +17,7 @@ public interface ErrorResponseExtractor<T> {
      * <b>Default:</b> Common implementation of this call assumes external service will return generic ErrorResponse on error
      *
      * @param errorResponseStr {@link org.springframework.http.client.ClientHttpResponse} body as string
-     * @return {@link com.atique.balanceservice.exceptionresolvers.model.ErrorResponse}
+     * @return {@link ErrorResponse}
      * @throws JsonProcessingException
      */
     T extract(String errorResponseStr) throws JsonProcessingException;

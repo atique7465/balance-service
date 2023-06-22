@@ -1,8 +1,8 @@
 package com.atique.balanceservice.infrustructure.http;
 
-import com.atique.balanceservice.exceptionresolvers.exceptions.ExternalServiceErrorResponseParseException;
-import com.atique.balanceservice.exceptionresolvers.exceptions.ExternalServiceException;
-import com.atique.balanceservice.exceptionresolvers.model.ErrorResponse;
+import com.atique.balanceservice.infrustructure.exceptionresolver.exception.ExternalServiceErrorResponseParseException;
+import com.atique.balanceservice.infrustructure.exceptionresolver.exception.ExternalServiceException;
+import com.atique.balanceservice.infrustructure.exceptionresolver.model.ErrorResponse;
 import com.atique.balanceservice.infrustructure.http.errorextractors.ErrorResponseExtractor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -16,12 +16,12 @@ import java.nio.charset.Charset;
 /**
  * <b>CommonErrorHandler</b> is used in this service to handle any error response from external service. <br>
  * <p>
- * This handler converts any http 4xx | 5xx status external service error response to generic {@link com.atique.balanceservice.exceptionresolvers.model.ErrorResponse} and
- * throws {@link com.atique.balanceservice.exceptionresolvers.exceptions.ExternalServiceException}
+ * This handler converts any http 4xx | 5xx status external service error response to generic {@link ErrorResponse} and
+ * throws {@link ExternalServiceException}
  * <p>
- * If external response content can't be read throws {@link com.atique.balanceservice.exceptionresolvers.exceptions.ExternalServiceErrorResponseParseException}
+ * If external response content can't be read throws {@link ExternalServiceErrorResponseParseException}
  * <p>
- * For all other http status throws {@link com.atique.balanceservice.exceptionresolvers.exceptions.ExternalServiceErrorResponseParseException}
+ * For all other http status throws {@link ExternalServiceErrorResponseParseException}
  * <p>
  * <b>This handler does not interrupt</b> {@link org.springframework.web.client.ResourceAccessException}
  * <p>

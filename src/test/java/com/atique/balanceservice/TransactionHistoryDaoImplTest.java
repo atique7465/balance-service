@@ -4,7 +4,7 @@ import com.atique.balanceservice.dao.TransactionHistoryDaoImpl;
 import com.atique.balanceservice.dao.config.ExternalTxnHistoryConfig;
 import com.atique.balanceservice.dao.enums.TransactionType;
 import com.atique.balanceservice.infrustructure.ApplicationProperties;
-import com.atique.balanceservice.infrustructure.gateway.ApiGateWay;
+import com.atique.balanceservice.infrustructure.http.gateway.ApiGateWay;
 import com.atique.balanceservice.dao.model.Transaction;
 import com.atique.balanceservice.dao.model.TransactionHistory;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,6 +1,6 @@
 package com.atique.balanceservice.infrustructure;
 
-import com.atique.balanceservice.exceptionresolvers.enums.ComponentCode;
+import com.atique.balanceservice.infrustructure.exceptionresolver.enums.ComponentCode;
 import com.atique.balanceservice.infrustructure.http.HttpRouteProperties;
 import lombok.Getter;
 import org.springframework.context.annotation.Configuration;

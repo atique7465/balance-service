@@ -7,7 +7,7 @@ import com.atique.balanceservice.controller.model.Balance;
 import com.atique.balanceservice.controller.model.BalanceSummary;
 import com.atique.balanceservice.dao.model.Transaction;
 import com.atique.balanceservice.dao.model.TransactionHistory;
-import com.atique.balanceservice.util.DateUtils;
+import com.atique.balanceservice.infrustructure.util.DateUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 

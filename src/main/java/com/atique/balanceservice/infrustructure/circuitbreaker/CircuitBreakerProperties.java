@@ -1,7 +1,7 @@
 package com.atique.balanceservice.infrustructure.circuitbreaker;
 
-import com.atique.balanceservice.exceptionresolvers.exceptions.BaseException;
-import com.atique.balanceservice.exceptionresolvers.exceptions.ExternalServiceException;
+import com.atique.balanceservice.infrustructure.exceptionresolver.exception.BaseException;
+import com.atique.balanceservice.infrustructure.exceptionresolver.exception.ExternalServiceException;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
 import lombok.Getter;
 import org.springframework.boot.context.properties.ConfigurationProperties;

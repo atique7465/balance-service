@@ -1,4 +1,4 @@
-package com.atique.balanceservice.exceptionresolvers.model;
+package com.atique.balanceservice.infrustructure.exceptionresolver.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

@@ -25,7 +25,3 @@ http.route.map:
     port: 8086
     contextPath: /transaction-history-service-1.0
     maxConnection: 200
-
-  
-  #http://localhost:8084/balance-service-1.0/swagger-ui/index.html
-  #localhost:8085/actuator/info
