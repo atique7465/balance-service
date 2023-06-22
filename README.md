@@ -3,6 +3,25 @@
 ### Description
 This service is design to facilitate customers of a financial organisation who wants to see their monthly balance and cumulative balance.
 
+### Technology
+1. Spring Boot:3.1.0
+2. Java: 17
+3. Gradle:7.5.1
+
+### Remote Deployment
+1. run the build task or go to terminal and execute
+   ```
+   $ ./gradlew clean build
+   
+   //or configure the termonal with gradle and jdk and execute
+   $ gradle clean build
+   ```
+2. after execution and executable jar **_[balance-service-1.0.jar]_** will be generated in _./build/libs_ directory
+3. deploy the jar to remote server and execute bellow command to run the jar
+   ```
+   java -jar balance-service-1.0.jar
+   ```
+
 ### APIs
 1. GET /api/v1/balance/{accNo}
    1. Path Param _**accNo** Customer Account Number._

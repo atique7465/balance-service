@@ -87,16 +87,16 @@ public class BalanceServiceImplTest {
         assertNotNull(summary);
         assertEquals(5, summary.getContent().size());
         assertEquals("04-2022", summary.getContent().get(0).getMonth());
-        assertEquals(new BigDecimal("100"), summary.getContent().get(0).getMonthlyBalance());
-        assertEquals(new BigDecimal("100"), summary.getContent().get(0).getCumulativeBalance());
+        assertEquals(new BigDecimal("100.00"), summary.getContent().get(0).getMonthlyBalance());
+        assertEquals(new BigDecimal("100.00"), summary.getContent().get(0).getCumulativeBalance());
 
         assertEquals("05-2023", summary.getContent().get(2).getMonth());
-        assertEquals(new BigDecimal("640"), summary.getContent().get(2).getMonthlyBalance());
-        assertEquals(new BigDecimal("1740"), summary.getContent().get(2).getCumulativeBalance());
+        assertEquals(new BigDecimal("640.00"), summary.getContent().get(2).getMonthlyBalance());
+        assertEquals(new BigDecimal("1740.00"), summary.getContent().get(2).getCumulativeBalance());
 
         assertEquals("07-2023", summary.getContent().get(4).getMonth());
-        assertEquals(BigDecimal.ZERO, summary.getContent().get(4).getMonthlyBalance());
-        assertEquals(new BigDecimal("2780"), summary.getContent().get(4).getCumulativeBalance());
+        assertEquals(new BigDecimal("0.00"), summary.getContent().get(4).getMonthlyBalance());
+        assertEquals(new BigDecimal("2780.00"), summary.getContent().get(4).getCumulativeBalance());
     }
 
     @Test
