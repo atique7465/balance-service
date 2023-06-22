@@ -2,11 +2,11 @@ package com.atique.balanceservice.service;
 
 import com.atique.balanceservice.dao.TransactionHistoryDao;
 import com.atique.balanceservice.dao.config.ExternalTxnHistoryConfig;
-import com.atique.balanceservice.enums.TransactionType;
-import com.atique.balanceservice.model.Balance;
-import com.atique.balanceservice.model.BalanceSummary;
-import com.atique.balanceservice.model.Transaction;
-import com.atique.balanceservice.model.TransactionHistory;
+import com.atique.balanceservice.dao.enums.TransactionType;
+import com.atique.balanceservice.controller.model.Balance;
+import com.atique.balanceservice.controller.model.BalanceSummary;
+import com.atique.balanceservice.dao.model.Transaction;
+import com.atique.balanceservice.dao.model.TransactionHistory;
 import com.atique.balanceservice.util.DateUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -44,6 +44,13 @@ public class BalanceServiceImpl implements BalanceService {
         return getBalanceSummeryFromTransactionHistory(summary, transactionHistory);
     }
 
+    /**
+     * Sort the transaction history by approvalDateTime in ascending order, calculate and populate the summary.
+     *
+     * @param summary {@link BalanceSummary}
+     * @param history {@link TransactionHistory}
+     * @return updated {@link BalanceSummary}
+     */
     private BalanceSummary getBalanceSummeryFromTransactionHistory(BalanceSummary summary, TransactionHistory history) {
 
         if (history == null || history.getContent() == null || history.getContent().isEmpty()) return summary;

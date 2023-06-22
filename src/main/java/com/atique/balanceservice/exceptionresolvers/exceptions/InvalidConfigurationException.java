@@ -1,6 +1,6 @@
-package com.atique.balanceservice.exceptions;
+package com.atique.balanceservice.exceptionresolvers.exceptions;
 
-import com.atique.balanceservice.enums.ErrorCode;
+import com.atique.balanceservice.exceptionresolvers.enums.ErrorCode;
 
 /**
  * @author atiQue

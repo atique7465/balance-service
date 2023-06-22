@@ -1,13 +1,14 @@
 package com.atique.balanceservice.infrustructure.http;
 
-import com.atique.balanceservice.exceptionresolvers.ErrorResponse;
-import com.atique.balanceservice.exceptions.InvalidConfigurationException;
+import com.atique.balanceservice.exceptionresolvers.exceptions.InvalidConfigurationException;
+import com.atique.balanceservice.exceptionresolvers.model.ErrorResponse;
 import com.atique.balanceservice.infrustructure.correlation.CorrelationApiGatewayInterceptor;
 import com.atique.balanceservice.infrustructure.gateway.ApiGateWay;
 import com.atique.balanceservice.infrustructure.gateway.ApiGateWayImpl;
 import com.atique.balanceservice.infrustructure.http.errorextractors.CommonErrorResponseExtractor;
 import com.atique.balanceservice.infrustructure.http.errorextractors.ErrorResponseExtractor;
 import com.atique.balanceservice.infrustructure.logging.LoggerApiGatewayInterceptor;
+import com.atique.balanceservice.util.Constants;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.hc.client5.http.HttpRoute;
@@ -64,7 +65,7 @@ public class RestTemplateConfiguration {
         this.routeProps = routeProps;
     }
 
-    @Bean(value = "common-api-gateway")
+    @Bean(value = Constants.ApiGateWays.COMMON_API_GATEWAY)
     @Primary
     public ApiGateWay getApiGateWay() {
         return new ApiGateWayImpl(creteRestTemplate(new CommonErrorResponseExtractor(objectMapper)));

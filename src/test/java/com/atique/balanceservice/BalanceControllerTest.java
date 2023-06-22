@@ -1,8 +1,8 @@
 package com.atique.balanceservice;
 
 import com.atique.balanceservice.controller.BalanceController;
-import com.atique.balanceservice.model.Balance;
-import com.atique.balanceservice.model.BalanceSummary;
+import com.atique.balanceservice.controller.model.Balance;
+import com.atique.balanceservice.controller.model.BalanceSummary;
 import com.atique.balanceservice.service.BalanceService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

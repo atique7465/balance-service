@@ -12,4 +12,12 @@ public interface Constants {
         Integer MIN_LENGTH = 10;
         Integer MAX_LENGTH = 10;
     }
+
+    interface ApiGateWays {
+        String COMMON_API_GATEWAY = "common-api-gateway";
+    }
+
+    interface CircuitBreakerDao {
+        String TXN_HISTORY_DAO = "transaction-history-dao";
+    }
 }

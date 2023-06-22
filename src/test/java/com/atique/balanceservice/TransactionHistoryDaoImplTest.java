@@ -2,11 +2,11 @@ package com.atique.balanceservice;
 
 import com.atique.balanceservice.dao.TransactionHistoryDaoImpl;
 import com.atique.balanceservice.dao.config.ExternalTxnHistoryConfig;
-import com.atique.balanceservice.enums.TransactionType;
+import com.atique.balanceservice.dao.enums.TransactionType;
 import com.atique.balanceservice.infrustructure.ApplicationProperties;
 import com.atique.balanceservice.infrustructure.gateway.ApiGateWay;
-import com.atique.balanceservice.model.Transaction;
-import com.atique.balanceservice.model.TransactionHistory;
+import com.atique.balanceservice.dao.model.Transaction;
+import com.atique.balanceservice.dao.model.TransactionHistory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

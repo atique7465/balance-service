@@ -1,6 +1,6 @@
-package com.atique.balanceservice.model;
+package com.atique.balanceservice.dao.model;
 
-import com.atique.balanceservice.enums.TransactionType;
+import com.atique.balanceservice.dao.enums.TransactionType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

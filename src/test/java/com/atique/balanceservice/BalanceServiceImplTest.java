@@ -2,12 +2,12 @@ package com.atique.balanceservice;
 
 import com.atique.balanceservice.dao.TransactionHistoryDao;
 import com.atique.balanceservice.dao.config.ExternalTxnHistoryConfig;
-import com.atique.balanceservice.enums.TransactionType;
-import com.atique.balanceservice.exceptions.InvalidDataException;
-import com.atique.balanceservice.model.Balance;
-import com.atique.balanceservice.model.BalanceSummary;
-import com.atique.balanceservice.model.Transaction;
-import com.atique.balanceservice.model.TransactionHistory;
+import com.atique.balanceservice.dao.enums.TransactionType;
+import com.atique.balanceservice.exceptionresolvers.exceptions.InvalidDataException;
+import com.atique.balanceservice.controller.model.Balance;
+import com.atique.balanceservice.controller.model.BalanceSummary;
+import com.atique.balanceservice.dao.model.Transaction;
+import com.atique.balanceservice.dao.model.TransactionHistory;
 import com.atique.balanceservice.service.BalanceServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

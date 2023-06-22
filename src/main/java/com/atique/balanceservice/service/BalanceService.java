@@ -1,6 +1,6 @@
 package com.atique.balanceservice.service;
 
-import com.atique.balanceservice.model.BalanceSummary;
+import com.atique.balanceservice.controller.model.BalanceSummary;
 
 /**
  * @author atiQue
@@ -8,5 +8,12 @@ import com.atique.balanceservice.model.BalanceSummary;
  */
 
 public interface BalanceService {
+
+    /**
+     * Get transaction-history from ext-history-service, calculate and return the summary of Balance list sorted by months.
+     *
+     * @param accNo Customer Account no.
+     * @return {@link BalanceSummary}
+     */
     BalanceSummary getSummaryByAccNo(String accNo);
 }

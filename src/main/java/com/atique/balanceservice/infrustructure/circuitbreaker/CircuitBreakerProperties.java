@@ -1,7 +1,7 @@
 package com.atique.balanceservice.infrustructure.circuitbreaker;
 
-import com.atique.balanceservice.exceptions.BaseException;
-import com.atique.balanceservice.exceptions.ExternalServiceException;
+import com.atique.balanceservice.exceptionresolvers.exceptions.BaseException;
+import com.atique.balanceservice.exceptionresolvers.exceptions.ExternalServiceException;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
 import lombok.Getter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -112,7 +112,7 @@ public class CircuitBreakerProperties {
      * nor success. Any exception matching or inheriting from one of the list will not count as
      * a failure nor success.
      * <p>
-     * Default: {@link com.atique.balanceservice.exceptions.BaseException}, {@link com.atique.balanceservice.exceptions.ExternalServiceException}
+     * Default: {@link BaseException}, {@link ExternalServiceException}
      */
     public final Class<? extends Throwable>[] ignoreExceptions = new Class[]{BaseException.class, ExternalServiceException.class};
 }

@@ -1,7 +1,7 @@
 package com.atique.balanceservice.exceptionresolvers;
 
 import com.atique.balanceservice.controller.BalanceController;
-import com.atique.balanceservice.enums.FeatureCode;
+import com.atique.balanceservice.exceptionresolvers.enums.FeatureCode;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 

@@ -1,6 +1,6 @@
 package com.atique.balanceservice.dao;
 
-import com.atique.balanceservice.model.TransactionHistory;
+import com.atique.balanceservice.dao.model.TransactionHistory;
 
 /**
  * @author atiQue

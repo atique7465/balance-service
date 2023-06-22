@@ -3,7 +3,8 @@ package com.atique.balanceservice.dao;
 import com.atique.balanceservice.dao.config.ExternalTxnHistoryConfig;
 import com.atique.balanceservice.infrustructure.ApplicationProperties;
 import com.atique.balanceservice.infrustructure.gateway.ApiGateWay;
-import com.atique.balanceservice.model.TransactionHistory;
+import com.atique.balanceservice.dao.model.TransactionHistory;
+import com.atique.balanceservice.util.Constants;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -19,21 +20,19 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Repository
 public class TransactionHistoryDaoImpl implements TransactionHistoryDao {
 
-    private static final String CIRCUIT_BREAKER_NAME = "transaction-history-service";
-
     private final ExternalTxnHistoryConfig config;
     private final ApplicationProperties applicationProperties;
     private final ApiGateWay apiGateWay;
 
     public TransactionHistoryDaoImpl(ExternalTxnHistoryConfig config, ApplicationProperties applicationProperties,
-                                     @Qualifier(value = "common-api-gateway") ApiGateWay apiGateWay) {
+                                     @Qualifier(value = Constants.ApiGateWays.COMMON_API_GATEWAY) ApiGateWay apiGateWay) {
         this.config = config;
         this.applicationProperties = applicationProperties;
         this.apiGateWay = apiGateWay;
     }
 
     @Override
-    @CircuitBreaker(name = CIRCUIT_BREAKER_NAME)
+    @CircuitBreaker(name = Constants.CircuitBreakerDao.TXN_HISTORY_DAO)
     public TransactionHistory getHistory(String accNo) {
 
         String url = UriComponentsBuilder.fromUriString(applicationProperties.getThsBasePath())

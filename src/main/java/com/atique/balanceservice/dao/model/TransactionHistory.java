@@ -1,4 +1,4 @@
-package com.atique.balanceservice.model;
+package com.atique.balanceservice.dao.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

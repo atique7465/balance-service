@@ -1,5 +1,6 @@
-package com.atique.balanceservice.model;
+package com.atique.balanceservice.controller.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,6 +17,8 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Schema(description = "Balance list of sorted months")
 public class BalanceSummary {
+    @Schema(name = "content", description = "List of balance", allOf = Balance.class)
     List<Balance> content;
 }

@@ -1,6 +1,6 @@
 package com.atique.balanceservice.infrustructure.http.errorextractors;
 
-import com.atique.balanceservice.exceptionresolvers.ErrorResponse;
+import com.atique.balanceservice.exceptionresolvers.model.ErrorResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

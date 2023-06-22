@@ -1,7 +1,7 @@
 package com.atique.balanceservice.util;
 
-import com.atique.balanceservice.enums.ErrorCode;
-import com.atique.balanceservice.exceptions.InvalidDataException;
+import com.atique.balanceservice.exceptionresolvers.enums.ErrorCode;
+import com.atique.balanceservice.exceptionresolvers.exceptions.InvalidDataException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;

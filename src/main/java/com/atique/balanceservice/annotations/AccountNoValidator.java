@@ -1,6 +1,5 @@
 package com.atique.balanceservice.annotations;
 
-import com.atique.balanceservice.exceptions.InvalidRequestException;
 import com.atique.balanceservice.util.Constants;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
