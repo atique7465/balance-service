@@ -128,11 +128,12 @@ Main purpose is to log incoming & out going url, headers, request, response, res
 3. **LoggingProperties**: _[Customizable from property source. Defaults are given here.]_ <br>
    ```
    #################### APP HTTP log Configuration ####################
-   app.http.log.enabled = true 
-   app.http.log.printHeader = true 
-   app.http.log.printPayload = true 
-   app.http.log.maxPayloadSize = 2000 
-   app.http.log.printableContent = application/json
+   app.http.log:
+     enabled: true
+     printHeader: false
+     printPayload: true
+     maxPayloadSize: 2000
+     printableContent: application/json
    ```
 
 ### HTTP
@@ -140,18 +141,19 @@ Main purpose is to log incoming & out going url, headers, request, response, res
 2. **RestTemplateConfiguration**: _RestTemplate is configured here with custom configurations, PoolingHttpClientConnectionManager with pooling, Error Handler, Error Extractor, Interceptors._
 3. **HttpConnectionPoolProperties**: _[Customizable from property source. Defaults are given here.]_<br>
    ```
-   #################### HTTP Connection Pooling Configuration ####################
-   http.pool.maxTotalConnection = 200
-   http.pool.maxConnectionPerRoute = 100
-   http.pool.connectionRequestTimeout = 5 * 1000
-   http.pool.connectTimeout = 5 * 1000
-   http.pool.defaultKeepAliveTime = 30 * 1000
-   http.pool.timeToLive = 30 * 10000
-   http.pool.validateAfterInactivity = 60 * 1000
-   http.pool.responseTimeout = 5 * 1000
-   http.pool.socketTimeout = 5 * 1000
-   http.pool.evictIdlConnection = true
-   http.pool.evictIdlConnectionAfter = 30 * 1000
+   #################### HTTP Connection Pooling Configuration [times are in millis] ####################
+   http.pool:
+      maxTotalConnection: 200
+      maxConnectionPerRoute: 100
+      connectionRequestTimeout: 5000
+      connectTimeout: 5000
+      defaultKeepAliveTime: 30000
+      timeToLive: 300000
+      validateAfterInactivity: 60000
+      responseTimeout: 5000
+      socketTimeout: 5000
+      evictIdlConnection: true
+      evictIdlConnectionAfter: 30000
    ```
 5. **HttpRouteProperties**: _External Service wise base path and max connection can be configured using these properties._ <br>
    Example:
@@ -170,16 +172,18 @@ Main purpose is to log incoming & out going url, headers, request, response, res
 resilience4j circuit breaker is used. Default configuration can be set from property source. 
 1. **CircuitBreakerProperties**: _[Customizable from property source. Defaults are given here.]_<br>
    ```
-   #################### Circuit Breaker Configuration ####################
-   app.circuit.breaker.slidingWindowSize = 50
-   app.circuit.breaker.minimumNumberOfCalls = 50
-   app.circuit.breaker.failureRateThreshold = 50
-   app.circuit.breaker.slowCallRateThreshold = 50
-   app.circuit.breaker.slowCallDurationThreshold = 5 * 1000
-   app.circuit.breaker.waitDurationInOpenState = 10 * 1000
-   app.circuit.breaker.permittedNumberOfCallsInHalfOpenState = 10
-   app.circuit.breaker.slidingWindowType = COUNT_BASED
-   app.circuit.breaker.ignoreExceptions = com.atique.balanceservice.infrustructure.exceptionresolver.exception.BaseException, com.atique.balanceservice.infrustructure.exceptionresolver.exception.ExternalServiceException
+   #################### Circuit Breaker Configuration [times are in millis] ####################
+   app.circuit.breaker:
+     slidingWindowSize: 50
+     minimumNumberOfCalls: 50
+     failureRateThreshold: 50
+     slowCallRateThreshold: 50
+     slowCallDurationThreshold: 5000
+     waitDurationInOpenState: 10000
+     permittedNumberOfCallsInHalfOpenState: 10
+     slidingWindowType: COUNT_BASED
+     recordExceptions: org.springframework.web.client.ResourceAccessException
+     ignoreExceptions: com.atique.balanceservice.infrustructure.exceptionresolver.exception.BaseException, com.atique.balanceservice.infrustructure.exceptionresolver.exception.ExternalServiceException
    ```
 
 ### Exception Resolver

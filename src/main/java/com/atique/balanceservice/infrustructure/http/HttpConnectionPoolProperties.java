@@ -1,6 +1,6 @@
 package com.atique.balanceservice.infrustructure.http;
 
-import lombok.Getter;
+import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
  * @since 17'Jun 2023 at 1:33 AM
  */
 
-@Getter
+@Data
 @Configuration
 @ConfigurationProperties(prefix = "http.pool")
 public class HttpConnectionPoolProperties {
@@ -20,7 +20,7 @@ public class HttpConnectionPoolProperties {
      * Default: 200
      * </p>
      */
-    private final Integer maxTotalConnection = 200;
+    private Integer maxTotalConnection = 200;
 
     /**
      * Determines the maximum total connections/per route in the connection pool
@@ -28,7 +28,7 @@ public class HttpConnectionPoolProperties {
      * Default: 100
      * </p>
      */
-    private final Integer maxConnectionPerRoute = 100;
+    private Integer maxConnectionPerRoute = 100;
 
     /**
      * The connection lease request timeout used when requesting a connection from the connection manager.
@@ -39,7 +39,7 @@ public class HttpConnectionPoolProperties {
      * Default: 5000 millis or 5 sec.
      * </p>
      */
-    private final Integer connectionRequestTimeout = 5 * 1000;
+    private Integer connectionRequestTimeout = 5 * 1000;
 
     /**
      * Determines the timeout until a new connection is fully established.
@@ -50,7 +50,7 @@ public class HttpConnectionPoolProperties {
      * Default: 5000 millis or 5 sec.
      * </p>
      */
-    private final Integer connectTimeout = 5 * 1000;
+    private Integer connectTimeout = 5 * 1000;
 
     /**
      * Determines the default of value of connection keep-alive time period when not
@@ -63,7 +63,7 @@ public class HttpConnectionPoolProperties {
      * Default: 30000 millis or 30 sec.
      * </p>
      */
-    private final Integer defaultKeepAliveTime = 30 * 1000;
+    private Integer defaultKeepAliveTime = 30 * 1000;
 
     /**
      * Defines the total span of time connections can be kept alive or execute requests.
@@ -72,7 +72,7 @@ public class HttpConnectionPoolProperties {
      * Default: 300000 millis or 5 min.
      * </p>
      */
-    private final Integer timeToLive = 30 * 10000;
+    private Integer timeToLive = 30 * 10000;
 
     /**
      * Defines period of inactivity after which persistent connections must be re-validated prior to being leased to the consumer.
@@ -82,7 +82,7 @@ public class HttpConnectionPoolProperties {
      * Default: 60000 millis or 60 sec.
      * </p>
      */
-    private final Integer validateAfterInactivity = 60 * 1000;
+    private Integer validateAfterInactivity = 60 * 1000;
 
     /**
      * Determines the timeout until arrival of a response from the opposite endpoint.
@@ -96,7 +96,7 @@ public class HttpConnectionPoolProperties {
      * Default: 5000 millis or 5 sec.
      * </p>
      */
-    private final Integer responseTimeout = 5 * 1000;
+    private Integer responseTimeout = 5 * 1000;
 
     /**
      * Determines the default socket timeout value for blocking I/O operations.
@@ -106,21 +106,21 @@ public class HttpConnectionPoolProperties {
      *
      * @see java.net.SocketOptions#SO_TIMEOUT
      */
-    private final Integer socketTimeout = 5 * 1000;
+    private Integer socketTimeout = 5 * 1000;
 
     /**
      * Make the instance of HttpClient proactively evict idle connections from the connection pool using a background thread.
      * <p>
-     *  Default: true
+     * Default: true
      * </p>
      */
-    private final boolean evictIdlConnection = true;
+    private boolean evictIdlConnection = true;
 
     /**
      * HttpClient proactively evict idle connections from the connection pool using a background thread after this time.
      * <p>
-     *  Default: 30000 millis or 30 sec.
+     * Default: 30000 millis or 30 sec.
      * </p>
      */
-    private final Integer evictIdlConnectionAfter = 30 * 1000;
+    private Integer evictIdlConnectionAfter = 30 * 1000;
 }

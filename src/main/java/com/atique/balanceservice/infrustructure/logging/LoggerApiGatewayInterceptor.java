@@ -6,7 +6,6 @@ import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * @author atiQue
@@ -15,21 +14,26 @@ import java.util.Map;
 
 public class LoggerApiGatewayInterceptor implements ClientHttpRequestInterceptor {
 
+    private final LoggingProperties props;
+
+    public LoggerApiGatewayInterceptor(LoggingProperties props) {
+        this.props = props;
+    }
+
     @Override
     public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
 
         long start = System.nanoTime();
 
         //Log request
-        Map<String, String> headers = request.getHeaders().toSingleValueMap();
-        RequestResponseLogger.log(request, body);
+        RequestResponseLogger.log(props, request, body);
 
         ClientHttpResponse response = execution.execute(request, body);
 
         long processingTime = (System.nanoTime() - start) / 1000000;
 
         //Log response
-        RequestResponseLogger.log(request, response, processingTime);
+        RequestResponseLogger.log(props, request, response, processingTime);
 
         return response;
     }

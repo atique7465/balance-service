@@ -1,5 +1,6 @@
 package com.atique.balanceservice.infrustructure.logging;
 
+import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -12,17 +13,18 @@ import java.util.List;
  * @since 17'Jun 2023 at 6:46 PM
  */
 
+@Data
 @Configuration
 @ConfigurationProperties(prefix = "app.http.log")
 public class LoggingProperties {
 
-    public static final boolean enabled = true;
+    private boolean enabled = true;
 
-    public static final boolean printHeader = true;
+    private boolean printHeader = false;
 
-    public static final boolean printPayload = true;
+    private boolean printPayload = true;
 
-    public static final Integer maxPayloadSize = 2000;
+    private Integer maxPayloadSize = 2000;
 
-    public static final List<String> printableContent = new ArrayList<>(List.of(MediaType.APPLICATION_JSON_VALUE));
+    private List<String> printableContent = new ArrayList<>(List.of(MediaType.APPLICATION_JSON_VALUE));
 }

@@ -6,7 +6,6 @@ import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -25,6 +24,12 @@ import java.io.IOException;
 @Slf4j
 public class LoggingFilter extends OncePerRequestFilter {
 
+    private final LoggingProperties props;
+
+    public LoggingFilter(LoggingProperties props) {
+        this.props = props;
+    }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
@@ -34,14 +39,14 @@ public class LoggingFilter extends OncePerRequestFilter {
         ContentCachingResponseWrapper responseWrapper = new ContentCachingResponseWrapper(response);
 
         //Log Request
-        RequestResponseLogger.log(cachedHttpServletRequest);
+        RequestResponseLogger.log(props, cachedHttpServletRequest);
 
         filterChain.doFilter(cachedHttpServletRequest, responseWrapper);
 
         long processingTime = (System.nanoTime() - startTime) / 1000000;
 
         //Log Response
-        RequestResponseLogger.log(cachedHttpServletRequest, responseWrapper, processingTime);
+        RequestResponseLogger.log(props, cachedHttpServletRequest, responseWrapper, processingTime);
 
         responseWrapper.copyBodyToResponse();
     }

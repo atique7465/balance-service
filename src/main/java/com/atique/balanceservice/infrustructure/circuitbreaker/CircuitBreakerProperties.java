@@ -3,7 +3,7 @@ package com.atique.balanceservice.infrustructure.circuitbreaker;
 import com.atique.balanceservice.infrustructure.exceptionresolver.exception.BaseException;
 import com.atique.balanceservice.infrustructure.exceptionresolver.exception.ExternalServiceException;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
-import lombok.Getter;
+import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.ResourceAccessException;
@@ -13,7 +13,7 @@ import org.springframework.web.client.ResourceAccessException;
  * @since 19'Jun 2023 at 11:36 PM
  */
 
-@Getter
+@Data
 @Configuration
 @ConfigurationProperties(prefix = "app.circuit.breaker")
 public class CircuitBreakerProperties {
@@ -27,7 +27,7 @@ public class CircuitBreakerProperties {
      * <p>
      * Default: 50
      */
-    public final int slidingWindowSize = 50;
+    public int slidingWindowSize = 50;
 
     /**
      * Configures the minimum number of calls which are required (per sliding window period)
@@ -38,7 +38,7 @@ public class CircuitBreakerProperties {
      * <p>
      * Default: 50
      */
-    public final int minimumNumberOfCalls = 50;
+    public int minimumNumberOfCalls = 50;
 
     /**
      * Configures the failure rate threshold in percentage. If the failure rate is equal to or
@@ -49,7 +49,7 @@ public class CircuitBreakerProperties {
      * <p>
      * Default: 50 %.
      */
-    public final int failureRateThreshold = 50;
+    public int failureRateThreshold = 50;
 
     /**
      * Configures a threshold in percentage. The CircuitBreaker considers a call as slow when
@@ -62,7 +62,7 @@ public class CircuitBreakerProperties {
      * <p>
      * Default value is 100
      */
-    public final int slowCallRateThreshold = 50;
+    public int slowCallRateThreshold = 50;
 
     /**
      * Configures the duration threshold above which calls are considered as slow and increase
@@ -70,7 +70,7 @@ public class CircuitBreakerProperties {
      * <p>
      * Default: 5000 millis or 5 sec.
      */
-    public final int slowCallDurationThreshold = 5 * 1000;
+    public int slowCallDurationThreshold = 5 * 1000;
 
     /**
      * Configures an interval function with a fixed wait duration which controls how long the
@@ -78,7 +78,7 @@ public class CircuitBreakerProperties {
      * <p>
      * Default: 10000 millis or 10 sec.
      */
-    public final int waitDurationInOpenState = 10 * 1000;
+    public int waitDurationInOpenState = 10 * 1000;
 
     /**
      * Configures the number of permitted calls when the CircuitBreaker is half open.
@@ -87,7 +87,7 @@ public class CircuitBreakerProperties {
      * <p>
      * Default: 10.
      */
-    public final int permittedNumberOfCallsInHalfOpenState = 10;
+    public int permittedNumberOfCallsInHalfOpenState = 10;
 
     /**
      * Configures the type of the sliding window which is used to record the outcome of calls
@@ -96,7 +96,7 @@ public class CircuitBreakerProperties {
      * <p>
      * Default: COUNT_BASED.
      */
-    public final CircuitBreakerConfig.SlidingWindowType slidingWindowType = CircuitBreakerConfig.SlidingWindowType.COUNT_BASED;
+    public CircuitBreakerConfig.SlidingWindowType slidingWindowType = CircuitBreakerConfig.SlidingWindowType.COUNT_BASED;
 
     /**
      * Configures a list of error classes that are recorded as a failure and thus increase the
@@ -105,7 +105,7 @@ public class CircuitBreakerProperties {
      * <p>
      * Default: {@link org.springframework.web.client.ResourceAccessException}
      */
-    public final Class<? extends Throwable>[] recordExceptions = new Class[]{ResourceAccessException.class};
+    public Class<? extends Throwable>[] recordExceptions = new Class[]{ResourceAccessException.class};
 
     /**
      * Configures a list of error classes that are ignored and thus neither count as a failure
@@ -114,5 +114,5 @@ public class CircuitBreakerProperties {
      * <p>
      * Default: {@link BaseException}, {@link ExternalServiceException}
      */
-    public final Class<? extends Throwable>[] ignoreExceptions = new Class[]{BaseException.class, ExternalServiceException.class};
+    public Class<? extends Throwable>[] ignoreExceptions = new Class[]{BaseException.class, ExternalServiceException.class};
 }

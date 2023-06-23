@@ -8,6 +8,7 @@ import com.atique.balanceservice.infrustructure.http.gateway.ApiGateWayImpl;
 import com.atique.balanceservice.infrustructure.http.errorextractors.CommonErrorResponseExtractor;
 import com.atique.balanceservice.infrustructure.http.errorextractors.ErrorResponseExtractor;
 import com.atique.balanceservice.infrustructure.logging.LoggerApiGatewayInterceptor;
+import com.atique.balanceservice.infrustructure.logging.LoggingProperties;
 import com.atique.balanceservice.infrustructure.util.Constants;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -58,11 +59,13 @@ public class RestTemplateConfiguration {
     private final ObjectMapper objectMapper;
     private final HttpConnectionPoolProperties poolProps;
     private final HttpRouteProperties routeProps;
+    private final LoggingProperties loggingProps;
 
-    public RestTemplateConfiguration(ObjectMapper objectMapper, HttpConnectionPoolProperties poolProps, HttpRouteProperties routeProps) {
+    public RestTemplateConfiguration(ObjectMapper objectMapper, HttpConnectionPoolProperties poolProps, HttpRouteProperties routeProps, LoggingProperties loggingProps) {
         this.objectMapper = objectMapper;
         this.poolProps = poolProps;
         this.routeProps = routeProps;
+        this.loggingProps = loggingProps;
     }
 
     @Bean(value = Constants.ApiGateWays.COMMON_API_GATEWAY)
@@ -92,7 +95,7 @@ public class RestTemplateConfiguration {
                 .requestFactory(() -> new BufferingClientHttpRequestFactory(getRequestFactory()))
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .messageConverters(getMappingJackson2HttpMessageConverter())
-                .additionalInterceptors(Arrays.asList(new CorrelationApiGatewayInterceptor(), new LoggerApiGatewayInterceptor()));
+                .additionalInterceptors(Arrays.asList(new CorrelationApiGatewayInterceptor(), new LoggerApiGatewayInterceptor(loggingProps)));
 
         return builder.build();
     }

@@ -2,7 +2,6 @@ package com.atique.balanceservice.infrustructure.logging;
 
 import com.atique.balanceservice.infrustructure.correlation.CorrelationHeader;
 import com.atique.balanceservice.infrustructure.correlation.RequestContext;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Service;
@@ -26,13 +25,16 @@ public class RequestResponseLogger {
 
     private static final Logger logger = Logger.getLogger(RequestResponseLogger.class.getName());
 
-    public static void log(CachedHttpServletRequest cachedHttpServletRequest) {
+    public static void log(LoggingProperties props, CachedHttpServletRequest cachedHttpServletRequest) {
 
-        if (!LoggingProperties.enabled) return;
+        if (!props.isEnabled()) return;
 
         String payLoad = "";
-        if (LoggingProperties.printPayload && LoggingProperties.printableContent.contains(cachedHttpServletRequest.getContentType())) {
+        if (props.isPrintPayload() && props.getPrintableContent().contains(cachedHttpServletRequest.getContentType())) {
             payLoad = LoggerHelper.getPayloadToPrint(cachedHttpServletRequest);
+            if (payLoad.length() > props.getMaxPayloadSize()) {
+                payLoad = "";
+            }
         }
         log(
                 RequestContext.get(CorrelationHeader.CALLER_SERVICE_HEADER.getValue()),
@@ -42,18 +44,21 @@ public class RequestResponseLogger {
                 null,
                 cachedHttpServletRequest.getProtocol(),
                 null,
-                LoggingProperties.printHeader ? LoggerHelper.getHeadersToPrint(cachedHttpServletRequest) : null,
+                props.isPrintHeader() ? LoggerHelper.getHeadersToPrint(cachedHttpServletRequest) : null,
                 payLoad
         );
     }
 
-    public static void log(CachedHttpServletRequest cachedHttpServletRequest, ContentCachingResponseWrapper responseWrapper, long processingTime) {
+    public static void log(LoggingProperties props, CachedHttpServletRequest cachedHttpServletRequest, ContentCachingResponseWrapper responseWrapper, long processingTime) {
 
-        if (!LoggingProperties.enabled) return;
+        if (!props.isEnabled()) return;
 
         String payLoad = "";
-        if (LoggingProperties.printPayload && StringUtils.hasLength(responseWrapper.getContentType()) && LoggingProperties.printableContent.contains(responseWrapper.getContentType())) {
+        if (props.isPrintPayload() && StringUtils.hasLength(responseWrapper.getContentType()) && props.getPrintableContent().contains(responseWrapper.getContentType())) {
             payLoad = LoggerHelper.getPayloadToPrint(responseWrapper.getContentAsByteArray());
+            if (payLoad.length() > props.getMaxPayloadSize()) {
+                payLoad = "";
+            }
         }
 
         log(
@@ -69,16 +74,19 @@ public class RequestResponseLogger {
         );
     }
 
-    public static void log(HttpRequest request, byte[] body) {
+    public static void log(LoggingProperties props, HttpRequest request, byte[] body) {
 
-        if (!LoggingProperties.enabled) return;
+        if (!props.isEnabled()) return;
 
         Map<String, String> headers = request.getHeaders().toSingleValueMap();
         String contentType = LoggerHelper.getContentType(headers);
 
         String payLoad = "";
-        if (LoggingProperties.printPayload && StringUtils.hasLength(contentType) && LoggingProperties.printableContent.contains(contentType)) {
+        if (props.isPrintPayload() && StringUtils.hasLength(contentType) && props.getPrintableContent().contains(contentType)) {
             payLoad = LoggerHelper.getPayloadToPrint(body);
+            if (payLoad.length() > props.getMaxPayloadSize()) {
+                payLoad = "";
+            }
         }
 
         log(
@@ -89,21 +97,24 @@ public class RequestResponseLogger {
                 null,
                 null,
                 null,
-                LoggingProperties.printHeader ? headers : null,
+                props.isPrintHeader() ? headers : null,
                 payLoad
         );
     }
 
-    public static void log(HttpRequest request, ClientHttpResponse response, long processingTime) throws IOException {
+    public static void log(LoggingProperties props, HttpRequest request, ClientHttpResponse response, long processingTime) throws IOException {
 
-        if (!LoggingProperties.enabled) return;
+        if (!props.isEnabled()) return;
 
         Map<String, String> headers = response.getHeaders().toSingleValueMap();
         String contentType = LoggerHelper.getContentType(headers);
 
         String payLoad = "";
-        if (LoggingProperties.printPayload && StringUtils.hasLength(contentType) && LoggingProperties.printableContent.contains(contentType)) {
+        if (props.isPrintPayload() && StringUtils.hasLength(contentType) && props.getPrintableContent().contains(contentType)) {
             payLoad = LoggerHelper.getPayloadToPrint(response);
+            if (payLoad.length() > props.getMaxPayloadSize()) {
+                payLoad = "";
+            }
         }
 
         log(
@@ -114,7 +125,7 @@ public class RequestResponseLogger {
                 response.getStatusCode().toString(),
                 null,
                 String.valueOf(processingTime),
-                LoggingProperties.printHeader ? headers : null,
+                props.isPrintHeader() ? headers : null,
                 payLoad
         );
     }
@@ -152,7 +163,7 @@ public class RequestResponseLogger {
         }
 
         // Log payLoad
-        if (StringUtils.hasLength(payLoad) && payLoad.length() <= LoggingProperties.maxPayloadSize) {
+        if (StringUtils.hasLength(payLoad)) {
             msg.append("[Payload]: ").append(payLoad);
         }
 
