@@ -1,1 +1,14 @@
+plugins {
+    id "com.gradle.enterprise" version "3.16.2"
+}
+
+gradleEnterprise {
+    buildScan {
+        termsOfServiceUrl = "https://gradle.com/terms-of-service"
+        termsOfServiceAgree = "yes"
+        tag "backend-engineer"
+        link "VCS", "https://github.com/atique7465/balance-service"
+    }
+}
+
 rootProject.name = 'balance-service'
